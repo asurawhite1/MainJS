@@ -44,7 +44,7 @@
             safeAmountInput.className = 'safeInput';
             const predictSafeButton = document.createElement('button');
             predictSafeButton.id = 'predict-safespot-button';
-            predictSafeButton.textContent = 'Predict Safespot';
+            predictSafeButton.textContent = 'Predict';
             predictSafeButton.className = 'mainGuiButton';
             predictSafeButton.addEventListener('click', function () {
                 const selectedAlgorithm = algorithmSelect.value;
