@@ -17,7 +17,7 @@
             const container = document.createElement('div');
             container.className = 'TextBar';
             const menuText = document.createElement('span');
-            menuText.textContent = "Asura's Predictor - v1.2";
+            menuText.textContent = "Asura's Predictor - v1.2 - loader";
             menuText.className = 'menuText';
             const menuText1 = document.createElement('span');
             menuText1.textContent = "Safe Amount";
