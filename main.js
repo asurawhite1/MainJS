@@ -28,7 +28,7 @@
             const algorithmSelect = document.createElement('select');
             algorithmSelect.id = 'algorithm-select';
             algorithmSelect.className = 'AlgorithmHolder';
-            const algorithms = ['Algorithm', 'Logarithm', 'Pastgame','adgiMines'];
+            const algorithms = ['Algorithm', 'Logarithm', 'Pastgame','adgiMines','patternshift'];
             algorithms.forEach(alg => {
                 const option = document.createElement('option');
                 option.value = alg;
@@ -65,7 +65,7 @@
                         showNotification('Failed to check game. Please try reloading the page.', true);
                     });
             });
-            
+
             const unrigButton = document.createElement('button');
             unrigButton.id = 'unrig-button';
             unrigButton.textContent = 'Unrig';
@@ -140,7 +140,7 @@
                 }
             `;
             document.head.appendChild(style);
-            
+
             let irip = false;
 
             function getPredction(selectedAlgorithm, safeAmount) {
@@ -150,7 +150,7 @@
                 showNotification('Predicting your minesGame...');
                 GM_xmlhttpRequest({
                     method: 'GET',
-                    url: 'https://api.bloxgame.com/games/mines/history?size=24&page=0',
+                    url: 'https://api.bloxgame.com/games/mines/history?size=50&page=0',
                     headers: {
                         'Content-Type': 'application/json',
                         'x-auth-token': localStorage.getItem("_DO_NOT_SHARE_BLOXGAME_TOKEN"),
@@ -160,7 +160,8 @@
                     onload: function (response) {
                         if (response.status === 200) {
                             const data = JSON.parse(response.responseText);
-                            const payload = data.data.map(game => game.mineLocations || []);
+                            const mine = data.data.map(game => game.mineLocations || []);
+                            const uncover = data.data.map(game => game.uncoveredLocations || [])
                             GM_xmlhttpRequest({
                                 method: 'POST',
                                 url: 'http://ro-premium.pylex.xyz:9244/algorithm',
@@ -169,7 +170,8 @@
                                 },
                                 data: JSON.stringify({
                                     safe_amount: safeAmount,
-                                    mines_data: payload,
+                                    mineLocations: mine,
+                                    uncoveredLocations : uncover,
                                     algorithm: selectedAlgorithm
                                 }),
                                 onload: function (apiResponse) {
@@ -177,7 +179,7 @@
                                     if (apiResponse.status === 200) {
                                         const apiData = JSON.parse(apiResponse.responseText);
                                         const board = apiData.gird;
-                                        highlightBoard(board, 'white');
+                                        highlightBoard(board);
                                         showNotification('Successfully predicted your minesGame');
                                     } else {
                                         showNotification('something went wrong');
@@ -199,36 +201,41 @@
                     }
                 });
             }
-            
+
             function clearHighlights() {
                 const tiles = document.querySelectorAll('.mines_minesGameItem__S2ytQ');
                 tiles.forEach(tile => {
                     tile.style.outline = '';
                     tile.style.boxShadow = '';
+                    tile.style.backgroundImage = '';
+                    tile.style.backgroundSize = '';
                 });
             }
-            
-            function highlightBoard(board, color) {
+
+            function highlightBoard(board) {
                 const tiles = document.querySelectorAll('.mines_minesGameItem__S2ytQ');
                 if (tiles.length !== 25) {
                     console.error(tiles.length);
                     return;
                 }
-            
+
                 board.forEach((row, rowIndex) => {
                     row.forEach((value, colIndex) => {
                         const index = rowIndex * 5 + colIndex;
                         if (value === 1) {
                             const tile = tiles[index];
                             if (tile) {
-                                tile.style.outline = `4px solid ${color}`;
-                                tile.style.boxShadow = `inset 0 0 10px ${color}`;
+                                tile.style.outline = `4px solid white`;
+                                tile.style.boxShadow = `0 0 10px white`;
+                                tile.style.backgroundImage = 'url("https://raw.githubusercontent.com/asurawhite1/MainJS/refs/heads/main/fire.gif")';
+                                tile.style.backgroundSize = '155%';
+
                             }
                         }
                     });
                 });
             }
-            
+
             function CheckGame() {
                 return new Promise((resolve, reject) => {
                     GM_xmlhttpRequest({
