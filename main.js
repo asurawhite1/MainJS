@@ -42,6 +42,7 @@
             safeAmountInput.placeholder = 'Enter safe amount here!';
             safeAmountInput.id = 'safe-amount-input';
             safeAmountInput.className = 'safeInput';
+            safeAmountInput.value = 1;
             const predictSafeButton = document.createElement('button');
             predictSafeButton.id = 'predict-safespot-button';
             predictSafeButton.textContent = 'Predict';
