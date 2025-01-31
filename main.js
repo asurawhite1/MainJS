@@ -43,6 +43,16 @@
             safeAmountInput.id = 'safe-amount-input';
             safeAmountInput.className = 'safeInput';
             safeAmountInput.value = 1;
+            safeAmountInput.addEventListener('input', () => {
+                let value = parseInt(safeAmountInput.value);
+                if (isNaN(value)) {
+                    safeAmountInput.value = 1; 
+                } else if (value < 1) {
+                    safeAmountInput.value = 1;
+                } else if (value > 24) {
+                    safeAmountInput.value = 24;
+                }
+            });
             const predictSafeButton = document.createElement('button');
             predictSafeButton.id = 'predict-safespot-button';
             predictSafeButton.textContent = 'Predict';
