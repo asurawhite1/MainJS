@@ -15,7 +15,6 @@
         const startGameButton = document.querySelector('.gameBetSubmit');
         if (startGameButton) {
             const container = document.createElement('div');
-            container.className = 'TextBar';
             const menuText = document.createElement('span');
             menuText.textContent = "Asura's Predictor - v1.3Beta - loader";
             menuText.className = 'menuText';
@@ -28,7 +27,7 @@
             const algorithmSelect = document.createElement('select');
             algorithmSelect.id = 'algorithm-select';
             algorithmSelect.className = 'AlgorithmHolder';
-            const algorithms = ['Algorithm', 'Logarithm', 'Pastgame','adgiMines','patternshift'];
+            const algorithms = ['Algorithm', 'Logarithm', 'Pastgame', 'adgiMines', 'patternshift'];
             algorithms.forEach(alg => {
                 const option = document.createElement('option');
                 option.value = alg;
@@ -60,10 +59,6 @@
             predictSafeButton.addEventListener('click', function () {
                 const selectedAlgorithm = algorithmSelect.value;
                 const safeAmount = parseInt(safeAmountInput.value);
-                if (isNaN(safeAmount) || safeAmount < 1 || safeAmount > 24) {
-                    alert('safeamount should be 1 - 24 :(');
-                    return;
-                }
                 CheckGame()
                     .then((isGameStarted) => {
                         if (isGameStarted) {
@@ -222,14 +217,12 @@
                     tile.style.backgroundSize = '';
                 });
             }
-
             function highlightBoard(board) {
                 const tiles = document.querySelectorAll('.mines_minesGameItem__S2ytQ');
                 if (tiles.length !== 25) {
                     console.error(tiles.length);
                     return;
                 }
-
                 board.forEach((row, rowIndex) => {
                     row.forEach((value, colIndex) => {
                         const index = rowIndex * 5 + colIndex;
@@ -237,9 +230,9 @@
                             const tile = tiles[index];
                             if (tile) {
                                 tile.style.outline = `4px solid white`;
-                                tile.style.boxShadow = `0 0 10px white`;
+                                tile.style.boxShadow = `0 0 30px white`;
                                 tile.style.backgroundImage = 'url("https://raw.githubusercontent.com/asurawhite1/MainJS/refs/heads/main/fire.gif")';
-                                tile.style.backgroundSize = '155%';
+                                tile.style.backgroundSize = '175%';
 
                             }
                         }
